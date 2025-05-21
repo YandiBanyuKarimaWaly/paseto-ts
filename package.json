@@ -19,7 +19,8 @@
     "watch": "tsc -w",
     "test": "tsx --test \"./tests/**/*.ts\"",
     "test:coverage": "c8 --include=src pnpm test",
-    "test:report": "c8 report --reporter=text-lcov > coverage.lcov"
+    "test:report": "c8 report --reporter=text-lcov > coverage.lcov",
+    "genkey": "tsx ./generateKeys.ts"
   },
   "homepage": "https://github.com/auth70/paseto-ts",
   "repository": "github:auth70/paseto-ts",
