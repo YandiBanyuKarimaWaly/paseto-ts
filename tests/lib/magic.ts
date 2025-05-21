@@ -21,7 +21,7 @@ const CONTROL_TOKEN_MAGIC_STRINGS = {
 const CONTROL_KEY_LENGTHS = {
     v4: {
         local: 32,
-        secret: 64,
+        secret: 32,
         public: 32,
     }
 };

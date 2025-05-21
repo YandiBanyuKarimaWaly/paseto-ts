@@ -6,14 +6,14 @@ import { sign } from '../../src/v4/sign';
 import { test, type TestContext } from 'node:test';
 
 const keys = {
-    secretKey: 'k4.secret.LMThyMVJEesfQX93MJsB77ISs8Ya9YnaEw3Qk-lZvlD7QjtJYfpqqXLflv8Oa82ganJzicoFxwgtcjdc5jMCYA',
+    secretKey: 'k4.secret.LMThyMVJEesfQX93MJsB77ISs8Ya9YnaEw3Qk-lZvlA',
     publicKey: 'k4.public.-0I7SWH6aqly35b_DmvNoGpyc4nKBccILXI3XOYzAmA'
 };
 const MESSAGE = '{"sub":"johndoe","iat":"2023-01-09T15:34:46.865Z"}';
 
 // Keys and token generated with panva/paseto for control
 const PANVA_KEYS = {
-    secretKey: 'k4.secret.FgbULh0ylLoBsG6KRi2ZM0ZDzNMgaCBp1jB0sbf8OXGBf_1Cd0wyDa76n-iN0qGj0vaYSu5QXdZhbj5lUWhkyA',
+    secretKey: 'k4.secret.FgbULh0ylLoBsG6KRi2ZM0ZDzNMgaCBp1jB0sbf8OXE',
     publicKey: 'k4.public.gX_9QndMMg2u-p_ojdKho9L2mEruUF3WYW4-ZVFoZMg',
 };
 const PANVA_TOKEN = 'v4.public.eyJzdWIiOiJuYXBvbGVvbiIsImlhdCI6IjIwMjMtMDEtMTNUMTQ6MTU6NDYuNjQ4WiIsImV4cCI6IjMwMjMtMDEtMDlUMTU6MzQ6NDYuODY1WiJ9sMzd6MAe67mw9cpHxQk8VeEVua-90CoRnl6ubAcDUnfpKhu-tWkW2igPi2DZPrSO8GwWzp4cxMo-vgqaQ2OhCg';
@@ -187,7 +187,7 @@ test('it throws if key is not a string or Uint8Array', async (t: TestContext) =>
 // Claims
 //
 
-test('it throws is message is not a JSON string', async (t: TestContext) => {
+test('it throws if message is not a JSON string', async (t: TestContext) => {
     try {
         const msg = 'Hello, world!';
         const token = sign(keys.secretKey, msg)
@@ -198,7 +198,7 @@ test('it throws is message is not a JSON string', async (t: TestContext) => {
     }
 });
 
-test('it throws is message is not a JSON string (Uint8Array)', async (t: TestContext) => {
+test('it throws if message is not a JSON string (Uint8Array)', async (t: TestContext) => {
     try {
         const msg = stringToUint8Array('Hello, world!');
         const token = sign(keys.secretKey, msg)

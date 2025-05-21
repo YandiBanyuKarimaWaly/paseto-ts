@@ -8,7 +8,7 @@ import { test, type TestContext } from 'node:test';
 import { verify } from '../../src/v4/verify';
 
 const keys = {
-    secretKey: "k4.secret.FgbULh0ylLoBsG6KRi2ZM0ZDzNMgaCBp1jB0sbf8OXGBf_1Cd0wyDa76n-iN0qGj0vaYSu5QXdZhbj5lUWhkyA",
+    secretKey: "k4.secret.FgbULh0ylLoBsG6KRi2ZM0ZDzNMgaCBp1jB0sbf8OXE",
     publicKey: "k4.public.gX_9QndMMg2u-p_ojdKho9L2mEruUF3WYW4-ZVFoZMg",
 }
 const PANVA_MESSAGE = JSON.stringify({

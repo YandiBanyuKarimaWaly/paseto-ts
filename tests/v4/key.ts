@@ -64,9 +64,9 @@ test('generates a random key pair for public purpose (paserk)', async (t: TestCo
     t.assert.strictEqual(typeof keyPair.publicKey, 'string');
     t.assert.strictEqual(keyPair.secretKey.startsWith('k4.secret.'), true);
     t.assert.strictEqual(keyPair.publicKey.startsWith('k4.public.'), true);
-    t.assert.strictEqual(keyPair.secretKey.split('.')[2].length, 86);
+    t.assert.strictEqual(keyPair.secretKey.split('.')[2].length, 43);
     t.assert.strictEqual(keyPair.publicKey.split('.')[2].length, 43);
-    t.assert.strictEqual(base64UrlDecode(keyPair.secretKey.split('.')[2]).byteLength, 64);
+    t.assert.strictEqual(base64UrlDecode(keyPair.secretKey.split('.')[2]).byteLength, 32);
     t.assert.strictEqual(base64UrlDecode(keyPair.publicKey.split('.')[2]).byteLength, 32);
 });
 
@@ -76,11 +76,11 @@ test('generates a random key pair for public purpose (buffer)', async (t: TestCo
     const publicKeyStr = new TextDecoder().decode(keyPair.publicKey);
     t.assert.strictEqual(keyPair.secretKey instanceof Uint8Array, true);
     t.assert.strictEqual(keyPair.publicKey instanceof Uint8Array, true);
-    t.assert.strictEqual(keyPair.secretKey.byteLength, 74);
+    t.assert.strictEqual(keyPair.secretKey.byteLength, 42);
     t.assert.strictEqual(keyPair.publicKey.byteLength, 42);
     t.assert.strictEqual(secretKeyStr.startsWith('k4.secret.'), true);
     t.assert.strictEqual(publicKeyStr.startsWith('k4.public.'), true);
-    t.assert.strictEqual(keyPair.secretKey.slice(10).byteLength, 64);
+    t.assert.strictEqual(keyPair.secretKey.slice(10).byteLength, 32);
     t.assert.strictEqual(keyPair.publicKey.slice(10).byteLength, 32);
 });
 
