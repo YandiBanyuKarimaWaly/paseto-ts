@@ -5,7 +5,7 @@ import { parseAssertion, parseFooter, parseKeyData, parsePayload } from "../lib/
 
 import { PAE } from "../lib/pae.js";
 import { base64UrlEncode } from "../lib/base64url.js";
-import { sign as ed25519Sign } from '@stablelib/ed25519';
+import { ed25519 } from "@noble/curves/ed25519";
 
 const EMPTY_BUFFER = new Uint8Array(0);
 
@@ -83,7 +83,7 @@ export function sign(
     );
 
     // Sign m2 using Ed25519 secret key
-    const sig = ed25519Sign(key, m2);
+    const sig = ed25519.sign(m2, key);
 
     let result = '';
 

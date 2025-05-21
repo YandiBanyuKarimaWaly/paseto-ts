@@ -4,7 +4,7 @@ import { parseAssertion, parseFooter, parseKeyData, parsePayload, parsePublicTok
 
 import { PAE } from '../lib/pae.js';
 import { PasetoSignatureInvalid } from '../lib/errors.js';
-import { verify as ed25519Verify } from '@stablelib/ed25519';
+import { ed25519 } from '@noble/curves/ed25519';
 import { returnPossibleJson } from '../lib/json.js';
 import { uint8ArrayToString } from '../lib/uint8array.js';
 import { validateToken } from '../lib/validate.js';
@@ -75,7 +75,7 @@ export function verify<T extends { [key: string]: any } = { [key: string]: any }
     );
 
     // Use Ed25519 to verify signature
-    const valid = ed25519Verify(key, m2, signature);
+    const valid = ed25519.verify(signature, m2, key);
 
     if(!valid) {
         throw new PasetoSignatureInvalid("Invalid token signature");

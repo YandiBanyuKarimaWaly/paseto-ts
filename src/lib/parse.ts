@@ -7,7 +7,7 @@ import { parseTime, parseTimeString } from "./time.js";
 
 import { assertJsonStringSize } from "./json.js";
 import { base64UrlDecode } from "./base64url.js";
-import { hash } from "@stablelib/blake2b";
+import { blake2b } from "@noble/hashes/blake2";
 
 /**
  * Parses a key and ensures it is a valid key for the given type
@@ -375,10 +375,10 @@ export function parseAssertion(assertion: Assertion | string | Uint8Array): Uint
  * @returns {object} Encryption and auth keys.
  */
 export function deriveEncryptionAndAuthKeys(key: Uint8Array, nonce: Uint8Array) {
-    const keyedHash = hash(concat(KEY_BYTES, nonce), 56, { key });
+    const keyedHash = blake2b(concat(KEY_BYTES, nonce), { dkLen: 56, key });
     const encryptionKey = keyedHash.slice(0, 32);
     const counterNonce = keyedHash.slice(32);
-    const authKey = hash(concat(AUTH_BYTES, nonce), 32, { key });
+    const authKey = blake2b(concat(AUTH_BYTES, nonce), { dkLen: 32, key });
 
     return {
         encryptionKey,

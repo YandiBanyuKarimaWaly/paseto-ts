@@ -47,7 +47,7 @@ export const TOKEN_MAGIC_BYTES = {
 export const KEY_LENGTHS = {
     v4: {
         local: 32,
-        secret: 64,
+        secret: 32,
         public: 32,
     }
 };

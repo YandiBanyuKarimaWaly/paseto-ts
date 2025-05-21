@@ -2,8 +2,9 @@ import { PasetoFormatInvalid, PasetoPurposeInvalid } from '../lib/errors.js';
 import { concat, stringToUint8Array } from '../lib/uint8array.js';
 
 import { base64UrlEncode } from '../lib/base64url.js';
-import { generateKeyPair } from '@stablelib/ed25519';
+import { ed25519 } from "@noble/curves/ed25519";
 import type { GetRandomValues } from '../lib/types.js';
+import { bytesToHex } from '@noble/ciphers/utils';
 
 export interface PASERKPublicKeyPair {
     secretKey: string;
@@ -63,7 +64,14 @@ export function generateKeys(purpose: 'local' | 'public', opts: { format?: 'pase
             break;
         case 'public':
             // For public keys, we generate an Ed25519 key pair
-            const keyPair = generateKeyPair();
+            const secretKey = ed25519.utils.randomPrivateKey()
+            const publicKey = ed25519.getPublicKey(secretKey)
+
+            const keyPair = {
+                publicKey,
+                secretKey
+            };
+
             switch (format) {
                 case 'paserk':
                     ret = {

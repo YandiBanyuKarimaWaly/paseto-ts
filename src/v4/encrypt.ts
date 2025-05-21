@@ -6,9 +6,9 @@ import type { GetRandomValues } from '../lib/types.js';
 
 import { PAE } from "../lib/pae.js";
 import { base64UrlEncode } from "../lib/base64url.js";
-import { hash } from "@stablelib/blake2b";
+import { blake2b } from "@noble/hashes/blake2";
 import { parseKeyData } from "../lib/parse.js";
-import { streamXOR } from "@stablelib/xchacha20";
+import { xchacha20 } from "@noble/ciphers/chacha";
 
 /**
  * Encrypts a payload using a local key and returns a PASETO v4.local token
@@ -91,7 +91,7 @@ export function encrypt(
     const { encryptionKey, counterNonce, authKey } = deriveEncryptionAndAuthKeys(key, nonce);
     
     // Encrypt the message using XChaCha20
-    const ciphertext = streamXOR(
+    const ciphertext = xchacha20(
         encryptionKey,
         counterNonce,
         payloadUint8,
@@ -108,7 +108,7 @@ export function encrypt(
     );
 
     // Calculate BLAKE2b-MAC of the output of preAuth using Ak as the authentication key
-    const tag = hash(preAuth, 32, { key: authKey });
+    const tag = blake2b(preAuth, { dkLen: 32, key: authKey });
 
     // If footer is empty, return header || base64url(nonce || ciphertext || t)
     // Otherwise, return header || base64url(nonce || ciphertext || t) || . || base64url(footer)

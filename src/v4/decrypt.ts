@@ -5,9 +5,9 @@ import { deriveEncryptionAndAuthKeys, parseAssertion, parseFooter, parseKeyData,
 
 import { PAE } from "../lib/pae.js";
 import { PasetoDecryptionFailed } from '../lib/errors.js';
-import { hash } from "@stablelib/blake2b";
+import { blake2b } from "@noble/hashes/blake2";
 import { returnPossibleJson } from "../lib/json.js";
-import { streamXOR } from "@stablelib/xchacha20";
+import { xchacha20 } from "@noble/ciphers/chacha";
 
 /**
  * Decrypts a PASETO v4.local token and returns the message.
@@ -77,7 +77,7 @@ export function decrypt<T extends { [key: string]: any } = { [key: string]: any 
     );
 
     // Calculate tag2 from pre-auth and auth key
-    const tag2 = hash(preAuth, 32, { key: authKey });
+    const tag2 = blake2b(preAuth, { dkLen: 32, key: authKey });
 
     // Check that tag and tag2 match
     if (!constantTimeEqual(tag, tag2)) {
@@ -85,7 +85,7 @@ export function decrypt<T extends { [key: string]: any } = { [key: string]: any 
     }
 
     // Decrypt ciphertext and return plaintext
-    const plaintext = streamXOR(encryptionKey, counterNonce, ciphertext, new Uint8Array(ciphertext.length));
+    const plaintext = xchacha20(encryptionKey, counterNonce, ciphertext, new Uint8Array(ciphertext.length));
 
     return {
         payload: parsePayload(plaintext, {
