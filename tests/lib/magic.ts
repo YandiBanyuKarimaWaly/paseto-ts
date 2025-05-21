@@ -1,9 +1,7 @@
-import * as assert from 'uvu/assert';
-
 import { KEY_LENGTHS, KEY_MAGIC_BYTES, KEY_MAGIC_STRINGS, TOKEN_MAGIC_BYTES, TOKEN_MAGIC_STRINGS } from '../../src/lib/magic';
 
 import { stringToUint8Array } from '../../src/lib/uint8array';
-import { test } from 'uvu';
+import { test, type TestContext } from 'node:test';
 
 const CONTROL_KEY_MAGIC_STRINGS = {
     v4: {
@@ -28,30 +26,28 @@ const CONTROL_KEY_LENGTHS = {
     }
 };
 
-test('magic strings are correct', () => {
-    assert.equal(KEY_MAGIC_STRINGS, CONTROL_KEY_MAGIC_STRINGS);
-    assert.equal(TOKEN_MAGIC_STRINGS, CONTROL_TOKEN_MAGIC_STRINGS);
+test('magic strings are correct', (t: TestContext) => {
+    t.assert.deepStrictEqual(KEY_MAGIC_STRINGS, CONTROL_KEY_MAGIC_STRINGS);
+    t.assert.deepStrictEqual(TOKEN_MAGIC_STRINGS, CONTROL_TOKEN_MAGIC_STRINGS);
 });
 
-test('magic strings resolve to magic bytes', () => {
+test('magic strings resolve to magic bytes', (t: TestContext) => {
     for (const version of Object.keys(KEY_MAGIC_STRINGS)) {
         for (const purpose of Object.keys(KEY_MAGIC_STRINGS[version])) {
             const magicString = KEY_MAGIC_STRINGS[version][purpose];
             const magicBytes = KEY_MAGIC_BYTES[version][purpose];
-            assert.equal(stringToUint8Array(magicString), magicBytes);
+            t.assert.deepStrictEqual(stringToUint8Array(magicString), magicBytes);
         }
     }
     for (const version of Object.keys(TOKEN_MAGIC_STRINGS)) {
         for (const purpose of Object.keys(TOKEN_MAGIC_STRINGS[version])) {
             const magicString = TOKEN_MAGIC_STRINGS[version][purpose];
             const magicBytes = TOKEN_MAGIC_BYTES[version][purpose];
-            assert.equal(stringToUint8Array(magicString), magicBytes);
+            t.assert.deepStrictEqual(stringToUint8Array(magicString), magicBytes);
         }
     }
 });
 
-test('key lengths are correct', () => {
-    assert.equal(KEY_LENGTHS, CONTROL_KEY_LENGTHS);
+test('key lengths are correct', (t: TestContext) => {
+    t.assert.deepStrictEqual(KEY_LENGTHS, CONTROL_KEY_LENGTHS);
 });
-
-test.run();

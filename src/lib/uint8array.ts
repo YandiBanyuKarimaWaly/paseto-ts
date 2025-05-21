@@ -1,9 +1,6 @@
 import { PasetoInvalid } from "./errors.js";
 import { isObject } from "./validate.js";
 
-const decoder = new TextDecoder();
-const encoder = new TextEncoder();
-
 /**
 * Convert a UTF-8 string to a Uint8Array
 * @param {string} str String to convert
@@ -11,6 +8,7 @@ const encoder = new TextEncoder();
 * @see https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder/encode
 */
 export function stringToUint8Array(str: string): Uint8Array {
+    const encoder = new TextEncoder();
     return encoder.encode(str);
 }
 
@@ -20,6 +18,7 @@ export function stringToUint8Array(str: string): Uint8Array {
 * @returns {string} String representation of the Uint8Array
 */
 export function uint8ArrayToString(arr: Uint8Array): string {
+    const decoder = new TextDecoder();
     return decoder.decode(arr);
 }
 

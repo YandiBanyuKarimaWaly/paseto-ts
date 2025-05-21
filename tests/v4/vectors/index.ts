@@ -1,12 +1,10 @@
-import * as assert from 'uvu/assert';
-
 import { KEY_MAGIC_BYTES } from '../../../src/lib/magic';
 import { base64UrlDecodeString } from '../../../src/lib/base64url';
 import { concat } from '../../../src/lib/uint8array';
 import { decrypt } from '../../../src/v4/decrypt';
 import { encrypt } from '../../../src/v4/encrypt';
 import { isObject } from '../../../src/lib/validate';
-import { test } from 'uvu';
+import { test, type TestContext } from 'node:test';
 
 function hexToUint8array(hex: string) {
     return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
@@ -200,7 +198,7 @@ const v4 = {
     ]
 }
 
-test('it passes test vectors', async () => {
+test('it passes test vectors', async (t: TestContext) => {
     
     const vectors = v4.tests;
 
@@ -220,10 +218,10 @@ test('it passes test vectors', async () => {
                         assertion: vector['implicit-assertion'] ? vector['implicit-assertion'] : undefined,
                     });
         
-                    assert.unreachable('should have thrown');
+                    t.assert.fail('should have thrown');
 
                 } catch (e) {
-                    assert.instance(e, Error);
+                    t.assert.strictEqual(e instanceof Error, true);
                 }
 
             } else {
@@ -234,14 +232,14 @@ test('it passes test vectors', async () => {
                 });
     
                 const payloadStr = JSON.stringify(decrypted.payload);
-                assert.equal(payloadStr, vector.payload);
+                t.assert.equal(payloadStr, vector.payload);
 
                 if(vector.footer) {
                     if(isObject(decrypted.footer)) {
                         const footerStr = JSON.stringify(decrypted.footer);
-                        assert.equal(footerStr, vector.footer);
+                        t.assert.equal(footerStr, vector.footer);
                     } else {
-                        assert.equal(decrypted.footer, vector.footer);
+                        t.assert.equal(decrypted.footer, vector.footer);
                     }
                 }
 
